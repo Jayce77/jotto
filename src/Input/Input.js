@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 const Input = ({secretWord}) => {
   const [currentGuess, setCurrentGuess ] = useState('');
+  
   return (
     <div data-test="component-input">
       <form
@@ -15,7 +16,10 @@ const Input = ({secretWord}) => {
           value={currentGuess}
           onChange={(e) => setCurrentGuess(e.target.value)} />
         <button
-          onClick={(e) => {e.preventDefault();} }
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentGuess('') }
+          }
           data-test="submit-button"
           className="btn btn-primary mb-2" >
           Submit
