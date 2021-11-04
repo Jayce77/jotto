@@ -1,9 +1,9 @@
 import { actionTypes } from '../actions';
 
-const successReducer = (state = false, action) => {
+const successReducer = (state = {success: false}, action) => {
   switch(action.type) {
     case (actionTypes.CORRECT_GUESS):
-      return true;
+      return {success: true};
     default:
       return state;
   }

@@ -1,12 +1,20 @@
-import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../../test/testUtils';
+import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { findByTestAttr, checkProps, storeFactory } from '../../test/testUtils';
 import Input from './Input';
 
-const defaultProps = {success: false, secretWord: 'party'};
+const defaultProps = {secretWord: 'party'};
 
-const setUp = (props = {}) => {
+const setUp = (props = {}, success = {}) => {
+  console.log(success)
+  const initialState = {successReducer: success}
+  const store = storeFactory(initialState);
   const setUpProps = {...defaultProps, ...props}
-  return shallow(<Input {...setUpProps} />);
+  return mount(
+    <Provider store={store} >
+      <Input {...setUpProps} />
+    </Provider>
+    );
 }
 
 const mockSetCurrentGuess = jest.fn();
@@ -22,7 +30,7 @@ test('does not throw a warning with expected props', () => {
 describe('render', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = setUp({success: true});
+    wrapper = setUp({}, {success: true});
   })
 
   describe('success is true', () => {
@@ -43,7 +51,7 @@ describe('render', () => {
   describe('success is false', () => {
     let wrapper;
     beforeEach(() => {
-      wrapper = setUp({success: false});
+      wrapper = setUp({}, {success: false});
     })
   
     describe('success is false', () => {
@@ -68,7 +76,7 @@ describe('state controlled input field', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setUp();
+    wrapper = setUp({}, {success: false});
   });
   
   test('state updates with value of input bos upon change', () => {
